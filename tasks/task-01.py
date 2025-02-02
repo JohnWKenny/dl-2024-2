@@ -10,20 +10,21 @@ class Perceptron:
         self.learning_rate = learning_rate
         self.epochs = epochs
 
-    def activation(self, x):
-        ### START CODE HERE ###
-        ### TODO
-        ### END CODE HERE ###
+    def activation(self, z):
+        return np.where(z > 0, 1, -1)
 
     def predict(self, X):
-        ### START CODE HERE ###
-        ### TODO
-        ### END CODE HERE ###
+        X_bias = np.c_[np.ones(X.shape[0]), X] # Concatenando 1 por causa do bias
+        return self.activation(np.dot(X_bias, self.weights))
 
     def fit(self, X, y):
-        ### START CODE HERE ###
-        ### TODO
-        ### END CODE HERE ###
+        X_bias = np.c_[np.ones(X.shape[0]), X]        
+        
+        for _ in range(self.epochs):
+            for i in range(X.shape[0]):
+                prediction = self.activation(np.dot(self.weights, X_bias[i]))
+                performance = (y[i] - prediction) / 2
+                self.weights += self.learning_rate * performance * X_bias[i]
 
 def generate_data(seed, samples, noise):
     """
